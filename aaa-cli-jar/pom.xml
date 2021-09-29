@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (c) 2016 Red Hat, Inc. and others. All rights reserved.
+
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License v1.0 which accompanies this distribution,
+and is available at http://www.eclipse.org/legal/epl-v10.html INTERNAL
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.opendaylight.aaa</groupId>
+    <artifactId>aaa-parent</artifactId>
+    <version>0.13.3</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <artifactId>aaa-cli-jar</artifactId>
+  <name>ODL :: aaa :: ${project.artifactId}</name>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.jopt-simple</groupId>
+      <artifactId>jopt-simple</artifactId>
+      <version>5.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.opendaylight.aaa</groupId>
+      <artifactId>aaa-shiro</artifactId>
+      <exclusions>
+        <exclusion>
+    <!-- Completely disable transitive dependencies -->
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- Now repeat the few really needed dependencies which we would normally get transitively -->
+    <dependency>
+      <groupId>org.opendaylight.aaa</groupId>
+      <artifactId>aaa-authn-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- Now for the FAT JAR we need to fix up some <scope>provided to be <scope>compile -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <scope>compile</scope> <!-- Not provided -->
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>compile</scope> <!-- Not test -->
+    </dependency>
+    <!-- Testing Dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.truth</groupId>
+      <artifactId>truth</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.opendaylight.yangtools</groupId>
+      <artifactId>testutils</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.opendaylight.aaa</groupId>
+      <artifactId>aaa-password-service-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.opendaylight.aaa</groupId>
+      <artifactId>aaa-password-service-impl</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <!-- TODO Remove when https://git.opendaylight.org/gerrit/#/c/48400/ is merged -->
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>shade</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <minimizeJar>true</minimizeJar>
+              <filters>
+                <filter>
+                  <artifact>org.opendaylight.aaa:aaa-shiro</artifact>
+                  <includes>
+                    <include>org/opendaylight/**</include>
+                  </includes>
+                </filter>
+                <filter>
+                  <artifact>com.h2database:h2</artifact>
+                  <includes>
+                    <include>org/h2/Driver.class</include>
+                    <include>org/h2/JdbcDriverBackwardsCompat.class</include>
+                    <include>org/h2/upgrade/**</include>
+                    <include>org/h2/util/**</include>
+                    <include>org/h2/jdbc/**</include>
+                    <include>org/h2/message/**</include>
+                    <include>org/h2/value/**</include>
+                    <include>org/h2/engine/**</include>
+                    <include>org/h2/command/**</include>
+                    <include>org/h2/security/**</include>
+                    <include>org/h2/store/**</include>
+                    <include>org/h2/compress/**</include>
+                    <include>org/h2/schema/**</include>
+                    <include>org/h2/result/**</include>
+                    <include>org/h2/api/**</include>
+                    <include>org/h2/mvstore/**</include>
+                    <include>org/h2/table/**</include>
+                    <include>org/h2/expression/**</include>
+                    <include>org/h2/index/**</include>
+                    <include>org/h2/constraint/**</include>
+                    <include>org/h2/pagestore/**</include>
+                  </includes>
+                </filter>
+                <filter>
+                  <artifact>org.opendaylight.aaa:aaa-password-service-api</artifact>
+                  <includes>
+                    <include>org/opendaylight/**</include>
+                  </includes>
+                </filter>
+                <filter>
+                  <artifact>org.opendaylight.aaa:aaa-password-service-impl</artifact>
+                  <includes>
+                    <include>org/opendaylight/**</include>
+                  </includes>
+                </filter>
+              </filters>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.opendaylight.aaa.cli.jar.Main</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

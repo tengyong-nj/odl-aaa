@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright © 2015, 2017 Brocade Communications Systems and others. All rights reserved.
+
+ This program and the accompanying materials are made available under the
+ terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ and is available at http://www.eclipse.org/legal/epl-v10.html
+ -->
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0" name="odl-aaa-${project.version}">
+    <feature name="odl-aaa-shiro" version="${project.version}">
+        <configfile finalname="etc/opendaylight/datastore/initial/config/aaa-app-config.xml">
+            mvn:org.opendaylight.aaa/aaa-shiro/${project.version}/xml/aaa-app-config
+        </configfile>
+        <configfile finalname="etc/opendaylight/datastore/initial/config/aaa-datastore-config.xml">
+            mvn:org.opendaylight.aaa/aaa-shiro/${project.version}/xml/aaa-datastore-config
+        </configfile>
+        <configfile finalname="etc/opendaylight/datastore/initial/config/aaa-password-service-config.xml">
+            mvn:org.opendaylight.aaa/aaa-password-service-impl/${project.version}/xml/aaa-password-service-config
+        </configfile>
+        <configfile finalname="bin/idmtool">
+            mvn:org.opendaylight.aaa/aaa-shiro/${project.version}/py/idmtool
+        </configfile>
+        <configfile finalname="/etc/org.opendaylight.aaa.filterchain.cfg">
+            mvn:org.opendaylight.aaa/aaa-filterchain/${project.version}/cfg/config
+        </configfile>
+        <feature version="[8.1,9)">odl-karaf-feat-jdbc</feature>
+        <feature version="[8.1,9)">odl-karaf-feat-jetty</feature>
+        <feature version="[8.1,9)">odl-apache-commons-codec</feature>
+        <feature version="[3,4)">odl-jolokia</feature>
+    </feature>
+</features>
