@@ -53,11 +53,12 @@ public class IdmLightApplication extends Application {
 
     @Override
     public Set<Object> getSingletons() {
-        return ImmutableSet.builderWithExpectedSize(4)
+        return ImmutableSet.builderWithExpectedSize(5)
                     .add(new GsonProvider<>())
                     .add(new DomainHandler(iidMStore, claimCache))
                     .add(new RoleHandler(iidMStore, claimCache))
                     .add(new UserHandler(iidMStore, claimCache))
+                    .add(new GrantHandler(iidMStore))
                     .build();
     }
 }

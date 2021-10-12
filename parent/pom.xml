@@ -14,7 +14,10 @@
   <name>ODL :: aaa :: ${project.artifactId}</name>
   <packaging>pom</packaging>
 
-
+  <properties>
+    <odlparent.checkstyle.skip>true</odlparent.checkstyle.skip>
+    <odlparent.spotbugs.skip>true</odlparent.spotbugs.skip>
+  </properties>
   <dependencyManagement>
     <dependencies>
       <!-- ODL -->
