@@ -49,7 +49,7 @@ public abstract class IdmLightConfig {
      */
     @Default
     public String getDbDirectory() {
-        return "./data";
+        return "./etc";
     }
 
     /**

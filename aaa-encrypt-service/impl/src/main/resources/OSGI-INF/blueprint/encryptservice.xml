@@ -12,7 +12,10 @@
     <argument ref="encryptConfig"/>
     <argument ref="dataBroker"/>
   </bean>
+  <bean id="aseEncryptionService" class="org.opendaylight.aaa.encrypt.impl.AESEncryptionServiceImpl">
+
+  </bean>
 
   <service ref="encryptService" interface="org.opendaylight.aaa.encrypt.AAAEncryptionService"/>
-
+  <service ref="aseEncryptionService" interface="org.opendaylight.aaa.encrypt.AESEncryptionService"/>
 </blueprint>
