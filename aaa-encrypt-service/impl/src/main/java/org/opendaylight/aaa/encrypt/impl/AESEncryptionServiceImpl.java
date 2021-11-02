@@ -38,7 +38,6 @@ public class AESEncryptionServiceImpl implements AESEncryptionService {
     private  final Cipher encryptCipher;
     private final Cipher decryptCipher;
     private final String encryptKey;
-    private final int passwordLength;
     private final String encryptSalt;
     private final String encryptType;
     private final int encryptIterationCount;
@@ -52,7 +51,6 @@ public class AESEncryptionServiceImpl implements AESEncryptionService {
         Document doc = getConfigElements();
         if(doc==null){
             encryptKey = "fBaUx89vFKkDKb284d7NjkFoNcKWBAkf";
-            passwordLength = 12;
             encryptSalt = "TdtWeHbch/7xP52/rp3Usw==";
             encryptMethod = "PBKDF2WithHmacSHA1";
             encryptType = "AES";
@@ -63,7 +61,6 @@ public class AESEncryptionServiceImpl implements AESEncryptionService {
         }else {
             final Node keyNode = doc.getElementsByTagName("encrypt-key").item(0);
             final Node salt = doc.getElementsByTagName("encrypt-salt").item(0);
-            final Node passwordLengthNode = doc.getElementsByTagName("password-length").item(0);
             final Node encryptTypeNode = doc.getElementsByTagName("encrypt-type").item(0);
             final Node iterationCountNode = doc.getElementsByTagName("encrypt-iteration-count").item(0);
             final Node methodMode = doc.getElementsByTagName("encrypt-method").item(0);
@@ -71,7 +68,6 @@ public class AESEncryptionServiceImpl implements AESEncryptionService {
             final Node keyLengthNode = doc.getElementsByTagName("encrypt-key-length").item(0);
 
             encryptKey = keyNode.getTextContent();
-            passwordLength =Integer.parseInt(passwordLengthNode.getTextContent());
             encryptSalt = salt.getTextContent();
             encryptMethod = methodMode.getTextContent();
             encryptType = encryptTypeNode.getTextContent();
